@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+
+var fs = require('fs'),
+    spawn = require('child_process').spawn,
+    semver = require('semver'),
+
+    argv = process.argv.slice(2),
+    projectDir = __dirname + '/..';
+
+if(argv.length < 1) {
+    console.log('Usage: bump [releases]');
+    console.log('Releases: major, minor, patch, prerelease, premajor, preminor, prepatch');
+    process.exit(1);
+}
+
+var npmver = spawn('npm', ['version', argv[0]], { cwd: projectDir }),
+    version = '',
+    error = false;
+
+npmver.stdout.on('data', function(data) {
+    version += data.toString();
+    console.log(data.toString());
+});
+
+npmver.stderr.on('data', function(data) {
+    console.error(data.toString());
+    error = true;
+});
+
+npmver.on('close', function() {
+    if(error) {
+        console.error('Unable to update.');
+        return;
+    }
+
+    var bwr = require(projectDir + '/bower.json');
+    bwr.version = version.trim().replace(/^v/i, '');
+
+    fs.writeFile(projectDir + '/bower.json', JSON.stringify(bwr, null, 2), function(err) {
+        if(err) throw err;
+        console.log('Updated to:', bwr.version);
+    });
+});

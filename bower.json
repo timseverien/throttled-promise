@@ -1,0 +1,21 @@
+{
+  "name": "promise-throttle",
+  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Similar to Promise.all, promise-throttle runs parallel promises, but allows you to throttle them.",
+  "keywords": [
+    "promise",
+    "throttle",
+    "parallel",
+    "sequence"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/timseverien/throttled-promise.git",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests",
+    "test"
+  ]
+}

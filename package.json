@@ -1,0 +1,33 @@
+{
+  "name": "throttled-promise",
+  "version": "0.1.1",
+  "description": "Similar to Promise.all, throttled-promise runs parallel promises, but allows you to throttle them.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --harmony --check-leaks test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timseverien/throttled-promise.git"
+  },
+  "keywords": [
+    "promise",
+    "throttle",
+    "parallel",
+    "sequence"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timseverien/throttled-promise/issues"
+  },
+  "homepage": "https://github.com/timseverien/throttled-promise",
+  "devDependencies": {
+    "mocha": "^2.2.4"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "semver": "^4.3.3"
+  }
+}

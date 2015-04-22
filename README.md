@@ -1,28 +1,17 @@
 ThrottledPromise
 ================
 
-Promises is one of the best things of this age that saves us from callback hells. It’s great for running parallel async processes.
-
-Imagine hundreds of parallel HTTP requests— hey, wait a minute! I don’t want hundreds of parallel requests! That’s right, Promises are great, but the API only lets us run things parallel or in sequence. But sometimes, when you don’t want to kill your server (or client), you may want to throttle the request. ThrottledPromise is our saviour.
+Promises are great, but the API only lets us run things in parallel or sequence. But sometimes, you don’t want to run *all* processes in parallel. To keep CPU/network/memory usage to a minimum for example. In that case, you may want to throttle the amount of parallel processes. This is what ThrottledPromise is for.
 
 ## Installation
 
-For using with node.js or io.js:
-
     npm install throttled-promise
 
-Yep, there’s a bower module as well:
+or
 
     bower install throttled-promise
 
 ## Usage
-
-There are just two things you have to remember:
-
-1. Use `ThrottledPromise.all([ ... ], n)` to throttle promises
-2. Don’t use `Promise`, but `ThrottlePromise` as constructor for those promises
-
-Note that `ThrottlePromise` objects do not have the methods `.then()`, `.catch()`, etc. It was never designed to be a substitution. It’s merely a wrapper for Promise so the Promise does not execute immediately. `ThrottlePromise.all()` does return a Promise, so you can still chain things.
 
     var ThrottledPromise = require('throttled-promise'),
         promises = [
@@ -35,9 +24,11 @@ Note that `ThrottlePromise` objects do not have the methods `.then()`, `.catch()
     ThrottledPromise.all(promises, 2)
     .then( ... )
     .catch( ... );
+	
+`ThrottlePromise` is not a substitution for `Promise`. It does not have the `.then()` and `.catch()` methods. It’s only meant to use for `ThrottledPromise.all()`. However, `ThrottledPromise.all()` does return a Promise object and can be chained as seen in the example above.
 
-## Support
+## Note
 
-This module *does not* contain a polyfill for Promise. This is something you have to take care of yourself.
+Some environments, older browsers for example, do not support Promises. To use this module on those environments, you will need a polyfill. I highly recommend Jake Archibald’s [es6-promise](https://github.com/jakearchibald/es6-promise), but any Polyfill that follows the specification should do.
 
-You may need to use the `--harmony` flag for node.js to use Promises.
+For node.js, you may want to use the `--harmony` flag instead of a polyfill to get support for Promises.

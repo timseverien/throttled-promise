@@ -29,6 +29,6 @@ or
 
 ## Note
 
-Some environments, older browsers for example, do not support Promises. To use this module on those environments, you will need a polyfill. I highly recommend Jake Archibald’s [es6-promise](https://github.com/jakearchibald/es6-promise), but any Polyfill that follows the specification should do.
+Some environments, older browsers for example, do not support Promises. To use this module on those environments, you will need a polyfill. I highly recommend Jake Archibald’s [es6-promise](https://github.com/jakearchibald/es6-promise), but any polyfill that follows the specification should do.
 
 For node.js, you may want to use the `--harmony` flag instead of a polyfill to get support for Promises.

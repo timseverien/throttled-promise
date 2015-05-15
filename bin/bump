@@ -26,6 +26,8 @@ if [ -d ".git" ]; then
 	
 	if [ -z "${changes}" ]; then
 		bump "bower.json"
+		git add .
+		git commit -m "Bump to ${version}"
 		git tag -a "${output}" -m "${version}"
 		git push origin --tags
 	else

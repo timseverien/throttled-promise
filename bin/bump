@@ -1,43 +1,36 @@
-#!/usr/bin/env node
+#!/bin/bash
 
-var fs = require('fs'),
-    spawn = require('child_process').spawn,
-    semver = require('semver'),
-
-    argv = process.argv.slice(2),
-    projectDir = __dirname + '/..';
-
-if(argv.length < 1) {
-    console.log('Usage: bump [releases]');
-    console.log('Releases: major, minor, patch, prerelease, premajor, preminor, prepatch');
-    process.exit(1);
+function bump {
+	output=$(npm version ${release} --no-git-tag-version)
+	version=${output:1}
+	search='("version":[[:space:]]*").+(")'
+	replace="\1${version}\2"
+	
+	sed -i ".tmp" -E "s/${search}/${replace}/g" "$1"
+	rm "$1.tmp"
 }
 
-var npmver = spawn('npm', ['version', argv[0]], { cwd: projectDir }),
-    version = '',
-    error = false;
+function help {
+	echo "Usage: $(basename $0) [<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease]"
+}
 
-npmver.stdout.on('data', function(data) {
-    version += data.toString();
-    console.log(data.toString());
-});
+if [ -z "$1" ] || [ "$1" = "help" ]; then
+	help
+	exit
+fi
 
-npmver.stderr.on('data', function(data) {
-    console.error(data.toString());
-    error = true;
-});
+release=$1
 
-npmver.on('close', function() {
-    if(error) {
-        console.error('Unable to update.');
-        return;
-    }
-
-    var bwr = require(projectDir + '/bower.json');
-    bwr.version = version.trim().replace(/^v/i, '');
-
-    fs.writeFile(projectDir + '/bower.json', JSON.stringify(bwr, null, 2), function(err) {
-        if(err) throw err;
-        console.log('Updated to:', bwr.version);
-    });
-});
+if [ -d ".git" ]; then
+	changes=$(git status --porcelain)
+	
+	if [ -z "${changes}" ]; then
+		bump "bower.json"
+		git tag -a "${output}" -m "${version}"
+		git push origin --tags
+	else
+		echo "Please commit staged files prior to bumping"
+	fi
+else
+	bump "bower.json"
+fi

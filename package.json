@@ -1,6 +1,6 @@
 {
   "name": "throttled-promise",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Similar to Promise.all, throttled-promise runs parallel promises, but allows you to throttle them.",
   "main": "index.js",
   "scripts": {

@@ -58,9 +58,9 @@ if(!!Promise) {
             while(i--) next(next, resolve, reject);
         });
     };
+	
+	// Export for node.js/io.js
+	if(typeof module.exports !== 'undefined') {
+		module.exports = ThrottledPromise;
+	}
 } else throw 'Promise is not defined.';
-
-// Export for node.js/io.js
-if(typeof module.exports !== 'undefined') {
-    module.exports = ThrottledPromise;
-}

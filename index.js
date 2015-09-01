@@ -25,7 +25,10 @@ if(!!Promise) {
     ThrottledPromise.all = function(promises, threads) {
         promises = promises.map(function(tp, i) {
             if(!(tp instanceof ThrottledPromise)) {
-                throw 'ThrottledPromise.all() only accepts a list of ThrottledPromises.';
+                return {
+                    index: i,
+                    value: tp
+                };
             }
 
             // Store index in ThrottledPromise
@@ -39,18 +42,27 @@ if(!!Promise) {
 
         // A function to iterate through promises
         function next(next, resolve, reject) {
-            var tp = promises.shift(),
-                p = tp.run();
+            var tp = promises.shift();
 
-            p.then(function(value) {
+            // Current item is
+            if(!(tp instanceof ThrottledPromise) && tp.value) {
+                values[tp.index] = tp.value;
+                tryFinish(resolve, reject);
+                return;
+            }
+
+            tp.run().then(function(value) {
                 values[tp.index] = value;
-
-                // Not everything is completed, so move on to next
-                if(++completed < count) next(next, resolve, reject);
-
-                // Everytimg seems completed, Promise will handle the rest
-                else resolve(values);
+                tryFinish(resolve, reject);
             }).catch(reject);
+        }
+
+        function tryFinish(resolve, reject) {
+            // Not everything is completed, so move on to next
+            if(++completed < count) next(next, resolve, reject);
+
+            // Everytimg seems completed, Promise will handle the rest
+            else resolve(values);
         }
 
         return new Promise(function(resolve, reject) {
@@ -58,7 +70,7 @@ if(!!Promise) {
             while(i--) next(next, resolve, reject);
         });
     };
-	
+
 	// Export for node.js/io.js
 	if(typeof module.exports !== 'undefined') {
 		module.exports = ThrottledPromise;

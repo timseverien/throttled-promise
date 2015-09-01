@@ -23,7 +23,7 @@ describe('Promise', function() {
         Promise.reject().catch(function() {
             done();
         });
-    })
+    });
 });
 
 describe('ThrottledPromise.all()', function() {
@@ -35,7 +35,8 @@ describe('ThrottledPromise.all()', function() {
         ];
 
         ThrottledPromise.all(promises, 2)
-            .then(function() { done() });
+            .then(function() { done() })
+            .catch(function() { done(new Error('Resolved promises should resolve')) });
     });
 
     it('rejects', function(done) {
@@ -46,29 +47,17 @@ describe('ThrottledPromise.all()', function() {
         ];
 
         ThrottledPromise.all(promises, 2)
-            .then(function() { /* do nothing */ })
+            .then(function() { done(new Error('Rejected promises should reject')) })
             .catch(function() { done() });
     });
 });
 
+describe('Non-promises', function() {
+    it('resolves', function(done) {
+        var promises = [1, 2, 3];
 
-
-
-
-
-
-
-/*
-function getThrottledPromises(n) {
-    var promises = [];
-
-    while(n--) {
-        promises.push(new ThrottledPromise(function(resolve, reject) {
-            setTimeout(function() {
-
-            }, Math.random() * 3000);
-        }));
-    }
-}
-
-ThrottledPromise.all(getThrottledPromises(10)); */
+        ThrottledPromise.all(promises, 2)
+            .then(function(data) { done() })
+            .catch(function() { done(new Error('Valid non-promises should resolve')) });
+    });
+});

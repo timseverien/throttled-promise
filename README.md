@@ -18,17 +18,17 @@ bower install throttled-promise
 ## Usage
 
 ```js
-var ThrottledPromise = require('throttled-promise'),
-    promises = [
-        new ThrottledPromise(function(resolve, reject) { ... }),
-        new ThrottledPromise(function(resolve, reject) { ... }),
-        new ThrottledPromise(function(resolve, reject) { ... })
-    ];
+const ThrottledPromise = require('throttled-promise');
+const promises = [
+    new ThrottledPromise((resolve, reject) => ...),
+    new ThrottledPromise((resolve, reject) => ...),
+    new ThrottledPromise((resolve, reject) => ...)
+];
 
 // Run promises, but only 2 parallel
 ThrottledPromise.all(promises, 2)
-.then( ... )
-.catch( ... );
+.then(...)
+.catch(...);
 ```
 
 `ThrottlePromise` is not a substitution for `Promise`. It does not have the `.then()` and `.catch()` methods. It’s only meant to use for `ThrottledPromise.all()`. However, `ThrottledPromise.all()` does return a Promise object and can be chained as seen in the example above.

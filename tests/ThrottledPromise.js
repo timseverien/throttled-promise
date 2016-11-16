@@ -1,5 +1,5 @@
 const ThrottledPromiseFactory = require('./util/ThrottledPromiseFactory');
-const ThrottledPromise = require('../');
+const ThrottledPromise = require('../').default;
 const expect = require('chai').expect;
 
 describe('ThrottledPromise.all()', () => {
@@ -12,7 +12,7 @@ describe('ThrottledPromise.all()', () => {
         const promises = [
             ThrottledPromiseFactory.createResolving(),
             ThrottledPromiseFactory.createResolving(),
-            ThrottledPromiseFactory.createResolving()
+            ThrottledPromiseFactory.createResolving(),
         ];
 
         ThrottledPromise.all(promises, 2)
@@ -24,7 +24,7 @@ describe('ThrottledPromise.all()', () => {
         const promises = [
             ThrottledPromiseFactory.createResolving(),
             ThrottledPromiseFactory.createRejecting(),
-            ThrottledPromiseFactory.createResolving()
+            ThrottledPromiseFactory.createResolving(),
         ];
 
         ThrottledPromise.all(promises, 2)
@@ -36,7 +36,7 @@ describe('ThrottledPromise.all()', () => {
         const promises = [
             ThrottledPromiseFactory.createResolving('Hello'),
             ThrottledPromiseFactory.createResolving('World'),
-            ThrottledPromiseFactory.createResolving('!')
+            ThrottledPromiseFactory.createResolving('!'),
         ];
 
         ThrottledPromise.all(promises, 2).then((returnValues) => {

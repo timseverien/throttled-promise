@@ -1,4 +1,4 @@
-const PromiseFactory = require('./util/PromiseFactory');
+const ThrottledPromiseFactory = require('./util/ThrottledPromiseFactory');
 const ThrottledPromise = require('../');
 const expect = require('chai').expect;
 
@@ -10,9 +10,9 @@ describe('ThrottledPromise.all()', () => {
 
     it('resolves if all Promises resolve', (done) => {
         const promises = [
-            PromiseFactory.getThrottledResolvedPromise(),
-            PromiseFactory.getThrottledResolvedPromise(),
-            PromiseFactory.getThrottledResolvedPromise()
+            ThrottledPromiseFactory.createResolving(),
+            ThrottledPromiseFactory.createResolving(),
+            ThrottledPromiseFactory.createResolving()
         ];
 
         ThrottledPromise.all(promises, 2)
@@ -22,9 +22,9 @@ describe('ThrottledPromise.all()', () => {
 
     it('rejects if any Promise rejects', (done) => {
         const promises = [
-            PromiseFactory.getThrottledResolvedPromise(),
-            PromiseFactory.getThrottledRejectedPromise(),
-            PromiseFactory.getThrottledResolvedPromise()
+            ThrottledPromiseFactory.createResolving(),
+            ThrottledPromiseFactory.createRejecting(),
+            ThrottledPromiseFactory.createResolving()
         ];
 
         ThrottledPromise.all(promises, 2)

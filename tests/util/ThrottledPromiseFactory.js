@@ -1,19 +1,19 @@
 const ThrottledPromise = require('../../');
 const timeoutDelay = 1000;
 
-function getThrottledResolvedPromise() {
+function createResolving() {
     return new ThrottledPromise((resolve, reject) => {
         setTimeout(resolve, timeoutDelay);
     });
 }
 
-function getThrottledRejectedPromise() {
+function createRejecting() {
     return new ThrottledPromise((resolve, reject) => {
         setTimeout(reject, timeoutDelay);
     });
 }
 
 module.exports = {
-  getThrottledResolvedPromise,
-  getThrottledRejectedPromise,
+  createResolving,
+  createRejecting,
 };

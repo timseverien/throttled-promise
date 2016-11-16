@@ -31,6 +31,21 @@ describe('ThrottledPromise.all()', () => {
         .then(() => done(new Error('Rejected promises should reject')))
         .catch(() => done())
     });
+
+    it('should return values in correct order', (done) => {
+        const promises = [
+            ThrottledPromiseFactory.createResolving('Hello'),
+            ThrottledPromiseFactory.createResolving('World'),
+            ThrottledPromiseFactory.createResolving('!')
+        ];
+
+        ThrottledPromise.all(promises, 2).then((returnValues) => {
+            expect(returnValues[0]).to.equal('Hello');
+            expect(returnValues[1]).to.equal('World');
+            expect(returnValues[2]).to.equal('!');
+            done();
+        });
+    });
 });
 
 describe('Non-promises', () => {

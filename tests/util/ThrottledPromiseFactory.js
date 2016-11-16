@@ -1,9 +1,10 @@
 const ThrottledPromise = require('../../');
 const timeoutDelay = 1000;
 
-function createResolving() {
+function createResolving(returnValue = undefined) {
     return new ThrottledPromise((resolve, reject) => {
-        setTimeout(resolve, timeoutDelay);
+        const next = () => resolve(returnValue);
+        setTimeout(next, timeoutDelay);
     });
 }
 

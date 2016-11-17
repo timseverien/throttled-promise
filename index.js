@@ -1,1 +1,1 @@
-module.exports = require('./dist/throttled-promise');
+module.exports = require('./dist/throttled-promise').default;

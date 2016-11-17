@@ -1,5 +1,5 @@
 const ThrottledPromiseFactory = require('./util/ThrottledPromiseFactory');
-const ThrottledPromise = require('../').default;
+const ThrottledPromise = require('../');
 const expect = require('chai').expect;
 
 describe('ThrottledPromise.all()', () => {
